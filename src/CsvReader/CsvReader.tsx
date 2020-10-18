@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import CollapsibleTable from './Table';
 import Checklist from './Checklist';
 
-interface CsvReaderProp {
+export interface CsvReaderProp {
     browser?: any
 }
-interface CsvReaderState {
+export interface CsvReaderState {
     data: Array<Record<string, string | number>>,
     headers: Array<string>,
     displayHeaders: Array<string>,
@@ -23,6 +23,23 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
         this.setState({ displayHeaders })
     }
 
+    static updateDisplayHeaders(maxNumberOfCol: number, displayHeaders: Array<string>) {
+        const inputDisplayHeaders = [...displayHeaders]
+        while (maxNumberOfCol < inputDisplayHeaders.length) {
+            inputDisplayHeaders.pop()
+        }
+        return inputDisplayHeaders;
+    }
+
+    static getDerivedStateFromProps(props: CsvReaderProp, state: CsvReaderState) {
+        const { browser } = props;
+        const { displayHeaders } = state;
+        const maxNumberOfCol = calculateMaxDisCols(browser);
+        const newDisplayHeaders = CsvReader.updateDisplayHeaders(maxNumberOfCol, displayHeaders);
+        return { ...state, displayHeaders: newDisplayHeaders };
+    }
+
+
     render() {
         const { browser } = this.props;
         console.log(browser)
@@ -38,6 +55,20 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
             </div>
         )
     }
+}
+
+
+const calculateMaxDisCols = (browser: any): number => {
+    if (browser.lessThan.small) {
+        return 2;
+    }
+    if (browser.lessThan.medium) {
+        return 3;
+    }
+    if (browser.lessThan.large) {
+        return 5;
+    }
+    return 7;
 }
 
 // TODO: Data to be removed and replaced with csv reader
