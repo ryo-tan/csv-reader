@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import CollapsibleTable from './Table';
 import Checklist from './Checklist';
+import FileUpload from './FileUpload';
 
 export interface CsvReaderProp {
     browser?: any
@@ -22,6 +23,14 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     onDisplayHeadersChange = (displayHeaders: Array<string>) => {
         this.setState({ displayHeaders })
     }
+
+    onFileChange = (data: Array<Record<string, string>>) => {
+        this.setState({
+            data,
+            headers: Object.keys(data[0]),
+            displayHeaders: Object.keys(data[0])
+        })
+    };
 
     static updateDisplayHeaders(maxNumberOfCol: number, displayHeaders: Array<string>) {
         const inputDisplayHeaders = [...displayHeaders]
@@ -50,6 +59,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
                 <h1>
                     Home Page
                 </h1>
+                <FileUpload onFileChange={this.onFileChange} />
                 <Checklist updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders}></Checklist>
                 <CollapsibleTable rows={this.state.data} displayHeaders={displayHeaders}></CollapsibleTable>
             </div>
