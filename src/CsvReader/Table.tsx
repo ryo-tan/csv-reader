@@ -107,7 +107,7 @@ function CollapsibleTable(props: { data: Array<Record<string, string>>, displayH
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[]}
                 component="div"
                 count={data.length}
                 rowsPerPage={rowsPerPage}
