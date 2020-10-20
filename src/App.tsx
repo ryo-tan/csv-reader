@@ -4,18 +4,31 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import store from './Core/store';
 import CsvReader from './CsvReader/CsvReader';
-
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { teal, orange } from '@material-ui/core/colors';
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: teal[500],
+    },
+    secondary: {
+      main: orange['A400'],
+    },
+  },
+});
 function App() {
   return (
     <div className='App-header'>
       <Provider store={store}>
-        <BrowserRouter>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route exact path="/" component={CsvReader} />
-            </Switch>
-          </Suspense>
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route exact path="/" component={CsvReader} />
+              </Switch>
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
       </Provider>
     </div>
   );

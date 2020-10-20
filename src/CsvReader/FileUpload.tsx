@@ -1,6 +1,7 @@
 import React, { Component, ChangeEvent } from 'react'
 import csv from 'csvtojson';
-
+import { Button } from '@material-ui/core';
+import './FileUpload.scss'
 export interface FileUploadProp {
     onFileChange(data: Array<Record<string, string>>): void;
 }
@@ -51,13 +52,20 @@ export default class FileUpload extends Component<FileUploadProp> {
         return data;
     }
 
+    uploadFile = () => {
+        ((document as Document).getElementById("fileInput") as HTMLInputElement).click()
+    }
     render() {
         const { loading } = this.state;
         return (
             <div>
-                <input type="file"
+                <input type="file" hidden id='fileInput'
                     accept=".csv" onChange={this.onFileChange} />
+                <Button className="upload-file-container" variant="contained" color="primary" onClick={this.uploadFile}>
+                    UPLOAD CSV
+                </Button>
                 {loading ? <div>LOADING...</div> : <div>done</div>}
+
             </div>
         )
     }

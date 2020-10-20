@@ -59,7 +59,7 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
         return (
             <div>
                 <FormControl required component="fieldset">
-                    <FormLabel component="legend">Displayed Columns</FormLabel>
+                    {/* <FormLabel component="legend">Displayed Columns</FormLabel> */}
                     <FormGroup>
                         {headers.map(header =>
                             <FormControlLabel
@@ -73,7 +73,6 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
                             />
                         )}
                     </FormGroup>
-                    <FormHelperText>You can display an error</FormHelperText>
                 </FormControl>
             </div>
         )

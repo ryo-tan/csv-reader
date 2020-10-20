@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { SearchableTable } from './Table';
 import Checklist from './Checklist';
 import FileUpload from './FileUpload';
+import './CsvReader.scss';
 
 export interface CsvReaderProp {
     browser?: any
@@ -14,12 +15,13 @@ export interface CsvReaderState {
 }
 
 class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
-    tableData = data;
+    tableData = null;
     state = {
-        data: this.tableData,
-        headers: Object.keys(this.tableData[0]),
-        displayHeaders: Object.keys(this.tableData[0])
+        data: [],
+        headers: [],
+        displayHeaders: []
     }
+
     onDisplayHeadersChange = (displayHeaders: Array<string>) => {
         this.setState({ displayHeaders })
     }
@@ -44,25 +46,31 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
         const { browser } = props;
         const { displayHeaders } = state;
         const maxNumberOfCol = calculateMaxDisCols(browser);
-        const newDisplayHeaders = CsvReader.updateDisplayHeaders(maxNumberOfCol, displayHeaders);
+        const newDisplayHeaders = displayHeaders ? CsvReader.updateDisplayHeaders(maxNumberOfCol, displayHeaders) : [];
         return { ...state, displayHeaders: newDisplayHeaders };
     }
 
-
     render() {
-        const { browser } = this.props;
-        console.log(browser)
-        const { headers, displayHeaders } = this.state;
-        console.log(displayHeaders);
+        const { headers, displayHeaders, data } = this.state;
+        let dataComponents;
+        if (data && data.length) {
+            dataComponents =
+                <Fragment>
+                    <h2>Columns Displayed</h2>
+                    <Checklist updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders}></Checklist>
+                    <h2>Data</h2>
+                    <SearchableTable data={data} displayHeaders={displayHeaders}></SearchableTable>
+                </Fragment>
+        }
         return (
-            <div>
-                <h1>
-                    CSV Reader
-                </h1>
-                <FileUpload onFileChange={this.onFileChange} />
-                <Checklist updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders}></Checklist>
-                {/* <CollapsibleTable data={this.state.data} displayHeaders={displayHeaders}></CollapsibleTable> */}
-                <SearchableTable data={this.state.data} displayHeaders={displayHeaders}></SearchableTable>
+            <div className='page'>
+                <h1>CSV Reader</h1>
+
+                <div className='upload-csv-container'>
+                    <h2>Upload a file</h2>
+                    <FileUpload onFileChange={this.onFileChange} />
+                </div>
+                {dataComponents}
             </div>
         )
     }
@@ -81,13 +89,6 @@ const calculateMaxDisCols = (browser: any): number => {
     }
     return 7;
 }
-
-// TODO: Data to be removed and replaced with csv reader
-const data = [
-    { name: 'short data', id: '234567' },
-    { name: 'med data', id: '2343f47' },
-    { name: 'long data', id: '3546786' }
-]
 
 const mapStateToProps = (state: any) => {
     console.log('yo', state)

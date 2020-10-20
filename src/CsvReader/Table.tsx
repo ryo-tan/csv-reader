@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { InputBase } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Highlight from 'react-highlighter';
 
 const useRowStyles = makeStyles({
@@ -153,7 +153,9 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
         const filteredData = this.filter(searchTerm, data);
         return (
             <Fragment>
-                <InputBase
+                <TextField
+                    fullWidth
+                    variant="outlined"
                     placeholder="Search in all coloumns"
                     inputProps={{ 'aria-label': 'Search in all coloumns' }}
                     onChange={this.onInputChange}
