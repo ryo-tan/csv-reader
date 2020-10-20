@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react'
 import csv from 'csvtojson';
-import { Button, LinearProgressProps, LinearProgress, Box, Typography, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss'
 export interface FileUploadProp {
     onFileChange(data: Array<Record<string, string>>): void;
@@ -51,18 +51,22 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
                     const keyToAddInBuiltObject = dataRows[0][key];
                     builtObject[keyToAddInBuiltObject] = valueToAddInBuiltObject;
                 })
-                data.push(builtObject)
+                data.push(builtObject);
             }
         })
         return data;
     }
 
     uploadFile = () => {
-        ((document as Document).getElementById("fileInput") as HTMLInputElement).click()
+        ((document as Document).getElementById("fileInput") as HTMLInputElement).click();
     }
 
     render() {
         const { loading } = this.state;
+        let loadingComponent;
+        if (loading) {
+            loadingComponent = <CircularProgress />;
+        }
         return (
             <div>
                 <input type="file" hidden id='fileInput'
@@ -70,24 +74,9 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
                 <Button className="upload-file-container" variant="contained" color="primary" onClick={this.uploadFile}>
                     UPLOAD CSV
                 </Button>
-                {loading ? <CircularProgress /> : <div>done</div>}
+                {loadingComponent}
             </div>
         )
     }
 
-}
-
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
-    return (
-        <Box display="flex" alignItems="center">
-            <Box width="100%" mr={1}>
-                <LinearProgress variant="determinate" {...props} />
-            </Box>
-            <Box minWidth={35}>
-                <Typography variant="body2" color="textSecondary">{`${Math.round(
-                    props.value,
-                )}%`}</Typography>
-            </Box>
-        </Box>
-    );
 }
