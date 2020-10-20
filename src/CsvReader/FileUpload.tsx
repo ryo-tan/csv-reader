@@ -3,7 +3,7 @@ import csv from 'csvtojson';
 import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss'
 export interface FileUploadProp {
-    onFileChange(data: Array<Record<string, string>>): void;
+    onFileChange(data: Array<Record<string, string>>, headers: Array<string>, fileName: string): void;
 }
 export interface FileUploadState {
     selectedFile?: File;
@@ -33,7 +33,13 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
             csv({ noheader: true, output: "json" })
                 .fromString(fileAsBinaryString as string)
                 .then((dataRows: Array<Record<string, string>>) => {
-                    this.props.onFileChange(this.mapCsvResultToData(dataRows));
+                    console.log(dataRows)
+                    if (dataRows.length === 1) {
+                        this.props.onFileChange([], [], file.name);
+                    } else {
+                        const outputData = this.mapCsvResultToData(dataRows);
+                        this.props.onFileChange(outputData, Object.keys(outputData[0]), file.name);
+                    }
 
                     this.setState((state) => { return { ...state, loading: false } });
                 })
@@ -42,6 +48,9 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
 
     mapCsvResultToData = (dataRows: Array<Record<string, string>>): Array<Record<string, string>> => {
         const data: Array<Record<string, string>> = [];
+        if (dataRows.length === 1) {
+            return data;
+        }
         dataRows.forEach((dataRow: Record<string, string>, i: number) => {
             if (i !== 0) { // first row contains col headers
                 const builtObject: any = {};

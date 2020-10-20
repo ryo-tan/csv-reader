@@ -45,5 +45,14 @@ describe('File Upload Component', () => {
         ];
         expect(wrapper.instance().mapCsvResultToData(dataWithMultipleRowsFromCsvToJson)).toEqual(expectedDataWithMultipleElement);
 
+        const dataWithHeaderOnly = [{
+            field1: 'one',
+            field2: 'two',
+            field3: 'three',
+        }]
+
+        const emptyData: Array<Record<string, string>> = []
+        expect(wrapper.instance().mapCsvResultToData(dataWithHeaderOnly)).toEqual(emptyData);
+
     })
 })
