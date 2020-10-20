@@ -157,21 +157,9 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
         const filteredData = this.filter(searchTerm, data);
         let tableComponent;
 
-        if (data && data.length) {
-            if (filteredData && filteredData.length) {
-                tableComponent =
-                    <Fragment>
-                        <TextField
-                            fullWidth
-                            variant="outlined"
-                            placeholder="Search in all coloumns"
-                            inputProps={{ 'aria-label': 'Search in all coloumns' }}
-                            onChange={this.onInputChange}
-                        />
-                        <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm}></CollapsibleTable>
-                    </Fragment>
-            } else {
-                tableComponent = <Fragment>
+        if (filteredData && filteredData.length) {
+            tableComponent =
+                <Fragment>
                     <TextField
                         fullWidth
                         variant="outlined"
@@ -179,12 +167,21 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
                         inputProps={{ 'aria-label': 'Search in all coloumns' }}
                         onChange={this.onInputChange}
                     />
-                    <Typography variant='body1'>No results found. Tune your search term for better results</Typography>
+                    <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm}></CollapsibleTable>
                 </Fragment>
-            }
         } else {
-            tableComponent = <Fragment>No data available</Fragment>
+            tableComponent = <Fragment>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder="Search in all coloumns"
+                    inputProps={{ 'aria-label': 'Search in all coloumns' }}
+                    onChange={this.onInputChange}
+                />
+                <Typography variant='body1'>No results found. Tune your search term for better results</Typography>
+            </Fragment>
         }
+
 
         return (
             <Fragment>
