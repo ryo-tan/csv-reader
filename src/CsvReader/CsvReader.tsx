@@ -4,6 +4,7 @@ import { SearchableTable } from './Table';
 import Checklist from './Checklist';
 import FileUpload from './FileUpload';
 import './CsvReader.scss';
+import { Typography } from '@material-ui/core';
 
 export interface CsvReaderProp {
     browser?: any
@@ -12,6 +13,7 @@ export interface CsvReaderState {
     data: Array<Record<string, string>>,
     headers: Array<string>,
     displayHeaders: Array<string>,
+    fileName?: string
 }
 
 class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
@@ -19,18 +21,20 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     state = {
         data: [],
         headers: [],
-        displayHeaders: []
+        displayHeaders: [],
+        fileName: undefined
     }
 
     onDisplayHeadersChange = (displayHeaders: Array<string>) => {
         this.setState({ displayHeaders })
     }
 
-    onFileChange = (data: Array<Record<string, string>>) => {
+    onFileChange = (data: Array<Record<string, string>>, headers: Array<string>, fileName: string) => {
         this.setState({
             data,
-            headers: Object.keys(data[0]),
-            displayHeaders: Object.keys(data[0])
+            headers,
+            displayHeaders: headers,
+            fileName
         })
     };
 
@@ -52,7 +56,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
 
     render() {
         const { browser } = this.props;
-        const { headers, displayHeaders, data } = this.state;
+        const { headers, displayHeaders, data, fileName } = this.state;
         let dataComponents;
         if (data && data.length) {
             dataComponents =
@@ -62,6 +66,13 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
                     <h2>Data</h2>
                     <SearchableTable data={data} displayHeaders={displayHeaders}></SearchableTable>
                 </Fragment>
+        } else {
+            if (fileName) {
+                dataComponents = <Fragment>
+                    <h2>Data</h2>
+                    <Typography variant='body2'>No data available</Typography>
+                </Fragment>
+            }
         }
         return (
             <div className='page'>
@@ -69,6 +80,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
 
                 <div className='upload-csv-container'>
                     <h2>Upload a file</h2>
+                    {fileName ? <Typography variant='h6'>File: {fileName}</Typography> : <Fragment></Fragment>}
                     <FileUpload onFileChange={this.onFileChange} />
                 </div>
                 {dataComponents}
