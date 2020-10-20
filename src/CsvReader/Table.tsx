@@ -26,12 +26,16 @@ const useRowStyles = makeStyles({
     },
 });
 
-function Detail(props: { label: string, value: string }) {
-    const { label, value } = props;
+function Detail(props: { label: string, value: string, searchTerm: string }) {
+    const { label, value, searchTerm } = props;
     return (
         <Fragment>
             <Typography variant="body2" style={{ fontWeight: 'bold' }}>{label}</Typography>
-            <Typography variant="body1">{value}</Typography>
+            <Typography variant="body1">
+                <Highlight search={searchTerm}>
+                    {value}
+                </Highlight>
+            </Typography>
         </Fragment>
     );
 }
@@ -62,7 +66,7 @@ function Row(props: { row: Record<string, string>, headers: Array<string>, searc
                         <Box margin={1}>
                             {
                                 Object.keys(row).map((key: string) =>
-                                    <Detail key={key} label={key} value={row[key]} />
+                                    <Detail key={key} label={key} value={row[key]} searchTerm={searchTerm} />
                                 )
                             }
                         </Box>
@@ -151,16 +155,40 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
         const { data, displayHeaders } = this.props;
         const { searchTerm } = this.state
         const filteredData = this.filter(searchTerm, data);
+        let tableComponent;
+
+        if (data && data.length) {
+            if (filteredData && filteredData.length) {
+                tableComponent =
+                    <Fragment>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Search in all coloumns"
+                            inputProps={{ 'aria-label': 'Search in all coloumns' }}
+                            onChange={this.onInputChange}
+                        />
+                        <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm}></CollapsibleTable>
+                    </Fragment>
+            } else {
+                tableComponent = <Fragment>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Search in all coloumns"
+                        inputProps={{ 'aria-label': 'Search in all coloumns' }}
+                        onChange={this.onInputChange}
+                    />
+                    <Typography variant='body1'>No results found. Tune your search term for better results</Typography>
+                </Fragment>
+            }
+        } else {
+            tableComponent = <Fragment>No data available</Fragment>
+        }
+
         return (
             <Fragment>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Search in all coloumns"
-                    inputProps={{ 'aria-label': 'Search in all coloumns' }}
-                    onChange={this.onInputChange}
-                />
-                <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm}></CollapsibleTable>
+                {tableComponent}
             </Fragment>
         )
     }
