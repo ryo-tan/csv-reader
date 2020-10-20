@@ -25,6 +25,15 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if(event.target.checked){
+            if(this.props.displayHeaders.length >= this.props.maxNumOfCol){
+                return;
+            }
+        }else{
+            if(this.props.displayHeaders.length === 1){
+                return;
+            }
+        }
         let newList = { ...this.state.list, [event.target.name]: event.target.checked };
         this.setState((state: ChecklistState, props: ChecklistProp) => {
             return { list: newList }
