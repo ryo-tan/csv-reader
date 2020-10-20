@@ -1,15 +1,19 @@
 import React, { Component, ChangeEvent } from 'react'
 import csv from 'csvtojson';
-import { Button } from '@material-ui/core';
+import { Button, LinearProgressProps, LinearProgress, Box, Typography, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss'
 export interface FileUploadProp {
     onFileChange(data: Array<Record<string, string>>): void;
 }
+export interface FileUploadState {
+    selectedFile?: File;
+    loading: boolean;
+}
 // to add props to pass data back
-export default class FileUpload extends Component<FileUploadProp> {
+export default class FileUpload extends Component<FileUploadProp, FileUploadState> {
     state = {
-        selectedFile: null,
-        loading: false
+        selectedFile: undefined,
+        loading: false,
     };
 
     onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +23,7 @@ export default class FileUpload extends Component<FileUploadProp> {
         } else {
             return;
         }
-        this.setState({ selectedFile: file, loading: true });
+        this.setState((state, props) => { return { ...state, selectedFile: file, loading: true } });
 
         const reader = new FileReader();
         reader.readAsBinaryString(file);
@@ -29,8 +33,8 @@ export default class FileUpload extends Component<FileUploadProp> {
             csv({ noheader: true, output: "json" })
                 .fromString(fileAsBinaryString as string)
                 .then((dataRows: Array<Record<string, string>>) => {
-                    // console.log(this.mapCsvResultToData(dataRows))
                     this.props.onFileChange(this.mapCsvResultToData(dataRows));
+
                     this.setState((state) => { return { ...state, loading: false } });
                 })
         };
@@ -40,7 +44,8 @@ export default class FileUpload extends Component<FileUploadProp> {
         const data: Array<Record<string, string>> = [];
         dataRows.forEach((dataRow: Record<string, string>, i: number) => {
             if (i !== 0) { // first row contains col headers
-                const builtObject: any = {}
+                const builtObject: any = {};
+
                 Object.keys(dataRow).forEach((key: string) => {
                     const valueToAddInBuiltObject = dataRow[key];
                     const keyToAddInBuiltObject = dataRows[0][key];
@@ -55,6 +60,7 @@ export default class FileUpload extends Component<FileUploadProp> {
     uploadFile = () => {
         ((document as Document).getElementById("fileInput") as HTMLInputElement).click()
     }
+
     render() {
         const { loading } = this.state;
         return (
@@ -64,10 +70,24 @@ export default class FileUpload extends Component<FileUploadProp> {
                 <Button className="upload-file-container" variant="contained" color="primary" onClick={this.uploadFile}>
                     UPLOAD CSV
                 </Button>
-                {loading ? <div>LOADING...</div> : <div>done</div>}
-
+                {loading ? <CircularProgress /> : <div>done</div>}
             </div>
         )
     }
+
 }
 
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+    return (
+        <Box display="flex" alignItems="center">
+            <Box width="100%" mr={1}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box minWidth={35}>
+                <Typography variant="body2" color="textSecondary">{`${Math.round(
+                    props.value,
+                )}%`}</Typography>
+            </Box>
+        </Box>
+    );
+}

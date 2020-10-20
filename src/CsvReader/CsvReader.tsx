@@ -92,7 +92,6 @@ const calculateMaxDisCols = (browser: any): number => {
 }
 
 const mapStateToProps = (state: any) => {
-    console.log('yo', state)
     return { browser: state.browser }
 }
 

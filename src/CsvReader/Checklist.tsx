@@ -61,6 +61,7 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
         return (
             <div>
                 <FormControl required component="fieldset">
+                    {/* NOTE: can add tooltip to hint that can use a bigger screen to view more columns in table */}
                     <FormLabel component="legend">Select up to {maxNumOfCol} columns for display</FormLabel>
                     <FormGroup>
                         <Box flexWrap="wrap">
