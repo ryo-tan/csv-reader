@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent } from 'react'
+import React, { Component, ChangeEvent, Fragment } from 'react'
 import csv from 'csvtojson';
 import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss'
@@ -65,7 +65,10 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
         const { loading } = this.state;
         let loadingComponent;
         if (loading) {
-            loadingComponent = <CircularProgress />;
+            loadingComponent = <Fragment>
+                <CircularProgress />
+                <div>Loading data...</div>
+            </Fragment>;
         }
         return (
             <div>
