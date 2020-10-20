@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -14,6 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { InputBase } from '@material-ui/core';
+import Highlight from 'react-highlighter';
 
 const useRowStyles = makeStyles({
     root: {
@@ -24,18 +26,18 @@ const useRowStyles = makeStyles({
     },
 });
 
-function Detail(props: { label: string, value: string | number }) {
+function Detail(props: { label: string, value: string }) {
     const { label, value } = props;
     return (
-        <React.Fragment>
+        <Fragment>
             <Typography variant="body2" style={{ fontWeight: 'bold' }}>{label}</Typography>
             <Typography variant="body1">{value}</Typography>
-        </React.Fragment>
+        </Fragment>
     );
 }
 
-function Row(props: { row: Record<string, string | number>, headers: Array<string> }) {
-    const { row, headers } = props;
+function Row(props: { row: Record<string, string>, headers: Array<string>, searchTerm: string }) {
+    const { row, headers, searchTerm } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     return (
@@ -47,7 +49,11 @@ function Row(props: { row: Record<string, string | number>, headers: Array<strin
                     </IconButton>
                 </TableCell>
                 {
-                    headers.map(header => <TableCell key={header} >{row[header]}</TableCell>)
+                    headers.map(header => <TableCell key={header} >
+                        <Highlight search={searchTerm}>
+                            {row[header]}
+                        </Highlight>
+                    </TableCell>)
                 }
             </TableRow>
             <TableRow >
@@ -68,11 +74,10 @@ function Row(props: { row: Record<string, string | number>, headers: Array<strin
 }
 
 
-export default function CollapsibleTable(inputRows: { rows: Array<Record<string, string | number>>, displayHeaders: Array<string> }) {
-    const { rows, displayHeaders } = inputRows;
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+function CollapsibleTable(props: { data: Array<Record<string, string>>, displayHeaders: Array<string>, searchTerm: string }) {
+    const { data, displayHeaders, searchTerm } = props;
+    const [page, setPage] = React.useState(0); // start from pageIndex 0
+    const [rowsPerPage, setRowsPerPage] = React.useState(10); // default to 10 per page
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -81,6 +86,7 @@ export default function CollapsibleTable(inputRows: { rows: Array<Record<string,
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
     return (
         <Fragment>
             <TableContainer component={Paper}>
@@ -94,8 +100,8 @@ export default function CollapsibleTable(inputRows: { rows: Array<Record<string,
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                            <Row key={row.name} row={row} headers={displayHeaders} />
+                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index: number) => (
+                            <Row key={index} row={row} headers={displayHeaders} searchTerm={searchTerm} />
                         ))}
                     </TableBody>
                 </Table>
@@ -103,7 +109,7 @@ export default function CollapsibleTable(inputRows: { rows: Array<Record<string,
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={rows.length}
+                count={data.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}
@@ -111,4 +117,53 @@ export default function CollapsibleTable(inputRows: { rows: Array<Record<string,
             />
         </Fragment>
     );
+}
+
+interface SearchableTableProps {
+    data: Array<Record<string, string>>;
+    displayHeaders: Array<string>;
+}
+
+interface SearchableTableState {
+    searchTerm: string;
+}
+
+export class SearchableTable extends Component<SearchableTableProps, SearchableTableState> {
+    state = {
+        searchTerm: ''
+    }
+
+    onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        // update state with trimmed search term
+        this.setState((state, props) => {
+            return {
+                searchTerm: value.trim()
+            }
+        });
+    };
+
+    filter = (searchTerm: string, data: Array<Record<string, string>>) => {
+        return data.filter(function (obj) {
+            return Object.keys(obj).some(function (key) {
+                return (obj[key]).toLowerCase().includes(searchTerm.toLowerCase());
+            })
+        });
+    }
+
+    render() {
+        const { data, displayHeaders } = this.props;
+        const { searchTerm } = this.state
+        const filteredData = this.filter(searchTerm, data);
+        return (
+            <Fragment>
+                <InputBase
+                    placeholder="Search in all coloumns"
+                    inputProps={{ 'aria-label': 'Search in all coloumns' }}
+                    onChange={this.onInputChange}
+                />
+                <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm}></CollapsibleTable>
+            </Fragment>
+        )
+    }
 }
