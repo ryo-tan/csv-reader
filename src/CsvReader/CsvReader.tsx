@@ -51,13 +51,14 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     }
 
     render() {
+        const { browser } = this.props;
         const { headers, displayHeaders, data } = this.state;
         let dataComponents;
         if (data && data.length) {
             dataComponents =
                 <Fragment>
                     <h2>Columns Displayed</h2>
-                    <Checklist updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders}></Checklist>
+                    <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders}></Checklist>
                     <h2>Data</h2>
                     <SearchableTable data={data} displayHeaders={displayHeaders}></SearchableTable>
                 </Fragment>
@@ -87,7 +88,7 @@ const calculateMaxDisCols = (browser: any): number => {
     if (browser.lessThan.large) {
         return 5;
     }
-    return 7;
+    return 10;
 }
 
 const mapStateToProps = (state: any) => {

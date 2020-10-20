@@ -5,11 +5,13 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Box } from '@material-ui/core';
 
 export interface ChecklistProp {
     displayHeaders: Array<string>;
     headers: Array<string>;
     updateDisplayHeaders(displayHeaders: Array<string>): void;
+    maxNumOfCol: number;
 }
 
 export interface ChecklistState {
@@ -54,24 +56,26 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
     }
 
     render() {
-        const { headers } = this.props;
+        const { headers, maxNumOfCol } = this.props;
         const { list } = this.state;
         return (
             <div>
                 <FormControl required component="fieldset">
-                    {/* <FormLabel component="legend">Displayed Columns</FormLabel> */}
+                    <FormLabel component="legend">Select up to {maxNumOfCol} columns for display</FormLabel>
                     <FormGroup>
-                        {headers.map(header =>
-                            <FormControlLabel
-                                key={header}
-                                control={
-                                    <Checkbox onChange={this.handleChange}
-                                        checked={list[header]}
-                                        name={header} />
-                                }
-                                label={header}
-                            />
-                        )}
+                        <Box flexWrap="wrap">
+                            {headers.map(header =>
+                                <FormControlLabel
+                                    key={header}
+                                    control={
+                                        <Checkbox onChange={this.handleChange}
+                                            checked={list[header]}
+                                            name={header} />
+                                    }
+                                    label={header}
+                                />
+                            )}
+                        </Box>
                     </FormGroup>
                 </FormControl>
             </div>
