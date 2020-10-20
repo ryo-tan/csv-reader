@@ -119,12 +119,12 @@ function CollapsibleTable(props: { data: Array<Record<string, string>>, displayH
     );
 }
 
-interface SearchableTableProps {
+export interface SearchableTableProps {
     data: Array<Record<string, string>>;
     displayHeaders: Array<string>;
 }
 
-interface SearchableTableState {
+export interface SearchableTableState {
     searchTerm: string;
 }
 
@@ -136,11 +136,7 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
     onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         // update state with trimmed search term
-        this.setState((state, props) => {
-            return {
-                searchTerm: value.trim()
-            }
-        });
+        this.setState({ searchTerm: value.trim() });
     };
 
     filter = (searchTerm: string, data: Array<Record<string, string>>) => {
