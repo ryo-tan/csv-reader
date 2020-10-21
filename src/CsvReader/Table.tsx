@@ -156,30 +156,25 @@ export class SearchableTable extends Component<SearchableTableProps, SearchableT
     const { searchTerm } = this.state;
     const filteredData = this.filter(searchTerm, data);
     let tableComponent;
+    let searchField = <TextField
+      fullWidth
+      variant="outlined"
+      placeholder="Search in all columns"
+      inputProps={{ 'aria-label': 'Search in all columns' }}
+      onChange={this.onInputChange}
+    />;
 
     if (filteredData && filteredData.length) {
       tableComponent = (
         <>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search in all coloumns"
-            inputProps={{ 'aria-label': 'Search in all coloumns' }}
-            onChange={this.onInputChange}
-          />
+          {searchField}
           <CollapsibleTable data={filteredData} displayHeaders={displayHeaders} searchTerm={searchTerm} />
         </>
       );
     } else {
       tableComponent = (
         <>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search in all coloumns"
-            inputProps={{ 'aria-label': 'Search in all coloumns' }}
-            onChange={this.onInputChange}
-          />
+          {searchField}
           <Typography variant="body1">No results found. Tune your search term for better results</Typography>
         </>
       );
