@@ -23,6 +23,9 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
     let file: File;
     if (event.target.files) {
       file = event.target.files[0];
+      if (!file) {
+        return;
+      }
     } else {
       return;
     }
