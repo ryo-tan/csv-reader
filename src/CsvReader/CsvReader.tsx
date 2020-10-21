@@ -75,16 +75,17 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
           </div>
           <div className={'section-container'}>
             <h3>Data</h3>
+            <Typography variant='body1'>Click on data row to view more data</Typography>
             <SearchableTable data={data} displayHeaders={displayHeaders} />
           </div>
         </>
       );
     } else if (fileName) {
       dataComponents = (
-        <>
+        <div className={'container'}>
           <h3>Data</h3>
           <Typography variant="body2">No data available</Typography>
-        </>
+        </div>
       );
     } else {
       dataComponents = (
