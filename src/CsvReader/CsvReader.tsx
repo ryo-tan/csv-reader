@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SearchableTable } from './Table';
 import Checklist from './Checklist';
@@ -7,95 +7,95 @@ import './CsvReader.scss';
 import { Typography } from '@material-ui/core';
 
 export interface CsvReaderProp {
-    browser?: any
+  browser?: any
 }
 export interface CsvReaderState {
-    data: Array<Record<string, string>>,
-    headers: Array<string>,
-    displayHeaders: Array<string>,
-    fileName?: string
+  data: Array<Record<string, string>>,
+  headers: Array<string>,
+  displayHeaders: Array<string>,
+  fileName?: string
 }
 
 class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
-    tableData = null;
+  tableData = null;
 
-    state = {
-      data: [],
-      headers: [],
-      displayHeaders: [],
-      fileName: undefined,
+  state = {
+    data: [],
+    headers: [],
+    displayHeaders: [],
+    fileName: undefined,
+  }
+
+  onDisplayHeadersChange = (displayHeaders: Array<string>) => {
+    this.setState({ displayHeaders });
+  }
+
+  onFileChange = (data: Array<Record<string, string>>, headers: Array<string>, fileName: string) => {
+    this.setState({
+      data,
+      headers,
+      displayHeaders: headers,
+      fileName,
+    });
+  };
+
+  static updateDisplayHeaders(maxNumberOfCol: number, displayHeaders: Array<string>) {
+    const inputDisplayHeaders = [...displayHeaders];
+    while (maxNumberOfCol < inputDisplayHeaders.length) {
+      inputDisplayHeaders.pop();
     }
+    return inputDisplayHeaders;
+  }
 
-    onDisplayHeadersChange = (displayHeaders: Array<string>) => {
-      this.setState({ displayHeaders });
-    }
+  static getDerivedStateFromProps(props: CsvReaderProp, state: CsvReaderState) {
+    const { browser } = props;
+    const { displayHeaders } = state;
+    const maxNumberOfCol = calculateMaxDisCols(browser);
+    const newDisplayHeaders = displayHeaders ? CsvReader.updateDisplayHeaders(maxNumberOfCol, displayHeaders) : [];
+    return { ...state, displayHeaders: newDisplayHeaders };
+  }
 
-    onFileChange = (data: Array<Record<string, string>>, headers: Array<string>, fileName: string) => {
-      this.setState({
-        data,
-        headers,
-        displayHeaders: headers,
-        fileName,
-      });
-    };
-
-    static updateDisplayHeaders(maxNumberOfCol: number, displayHeaders: Array<string>) {
-      const inputDisplayHeaders = [...displayHeaders];
-      while (maxNumberOfCol < inputDisplayHeaders.length) {
-        inputDisplayHeaders.pop();
-      }
-      return inputDisplayHeaders;
-    }
-
-    static getDerivedStateFromProps(props: CsvReaderProp, state: CsvReaderState) {
-      const { browser } = props;
-      const { displayHeaders } = state;
-      const maxNumberOfCol = calculateMaxDisCols(browser);
-      const newDisplayHeaders = displayHeaders ? CsvReader.updateDisplayHeaders(maxNumberOfCol, displayHeaders) : [];
-      return { ...state, displayHeaders: newDisplayHeaders };
-    }
-
-    render() {
-      const { browser } = this.props;
-      const {
-        headers, displayHeaders, data, fileName,
-      } = this.state;
-      let dataComponents;
-      if (data && data.length) {
-        dataComponents = (
-          <>
-            <h2>Columns Displayed</h2>
-            <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
-            <h2>Data</h2>
-            <SearchableTable data={data} displayHeaders={displayHeaders} />
-          </>
-        );
-      } else if (fileName) {
-        dataComponents = (
-          <>
-            <h2>Data</h2>
-            <Typography variant="body2">No data available</Typography>
-          </>
-        );
-      }
-      return (
-        <div className="page">
-          <h1>CSV Reader</h1>
-
-          <div className="upload-csv-container">
-            <h2>Upload a file</h2>
-            {fileName ? (
-              <Typography variant="h6">
-                File:
-                {fileName}
-              </Typography>
-            ) : <></>}
-            <FileUpload onFileChange={this.onFileChange} />
-          </div>
-          {dataComponents}
-        </div>
+  render() {
+    const { browser } = this.props;
+    const {
+      headers, displayHeaders, data, fileName,
+    } = this.state;
+    let dataComponents;
+    if (data && data.length) {
+      dataComponents = (
+        <>
+          <h2>Columns Displayed</h2>
+          <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
+          <h2>Data</h2>
+          <SearchableTable data={data} displayHeaders={displayHeaders} />
+        </>
+      );
+    } else if (fileName) {
+      dataComponents = (
+        <>
+          <h2>Data</h2>
+          <Typography variant="body2">No data available</Typography>
+        </>
       );
     }
+    return (
+      <div className="page">
+        <h1>CSV Reader</h1>
+
+        <div className="upload-csv-container">
+          <h2>Upload a file</h2>
+          {fileName ? (
+            <Typography variant="h6">
+              File:
+                {fileName}
+            </Typography>
+          ) : <></>}
+          <FileUpload onFileChange={this.onFileChange} />
+        </div>
+        {dataComponents}
+      </div>
+    );
+  }
 }
 
 const calculateMaxDisCols = (browser: any): number => {
