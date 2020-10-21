@@ -81,6 +81,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
         </>
       );
     } else if (fileName) {
+      // got file but no data
       dataComponents = (
         <div className={'container'}>
           <h3>Data</h3>
@@ -88,6 +89,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
         </div>
       );
     } else {
+      // TODO: Refactor component to functional component
       dataComponents = (
         <div className={'container'}>
           <h3>How it works?</h3>
