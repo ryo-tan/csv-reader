@@ -33,8 +33,7 @@ export default class FileUpload extends Component<FileUploadProp, FileUploadStat
             csv({ noheader: true, output: "json" })
                 .fromString(fileAsBinaryString as string)
                 .then((dataRows: Array<Record<string, string>>) => {
-                    console.log(dataRows)
-                    if (dataRows.length === 1) {
+                    if (dataRows.length <= 1) {
                         this.props.onFileChange([], [], file.name);
                     } else {
                         const outputData = this.mapCsvResultToData(dataRows);

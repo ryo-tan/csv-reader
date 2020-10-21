@@ -11,7 +11,7 @@ describe('File Upload Component', () => {
         wrapper = mount(<FileUpload {...props} />);
     });
 
-    test('map data from csvtojson to type used in app', () => {
+    test('mapCsvResultToData', () => {
         const dataFromCsvToJson = [{
             field1: 'one',
             field2: 'two',
@@ -44,6 +44,9 @@ describe('File Upload Component', () => {
             { one: 'ichi', two: 'ni', three: 'san' }
         ];
         expect(wrapper.instance().mapCsvResultToData(dataWithMultipleRowsFromCsvToJson)).toEqual(expectedDataWithMultipleElement);
+    })
+
+    test('mapCsvResultToData with csv with headers only', () => {
 
         const dataWithHeaderOnly = [{
             field1: 'one',
@@ -51,8 +54,14 @@ describe('File Upload Component', () => {
             field3: 'three',
         }]
 
-        const emptyData: Array<Record<string, string>> = []
+        const emptyData: Array<Record<string, string>> = [];
         expect(wrapper.instance().mapCsvResultToData(dataWithHeaderOnly)).toEqual(emptyData);
 
+    })
+
+    test('mapCsvResultToData with empty csv', () => {
+        const dataFromCsvToJson: Array<Record<string, string>> = [];
+        const expectedData: Array<Record<string, string>> = [];
+        expect(wrapper.instance().mapCsvResultToData(dataFromCsvToJson)).toEqual(expectedData);
     })
 })
