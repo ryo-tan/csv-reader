@@ -4,7 +4,11 @@ import { SearchableTable } from './Table';
 import Checklist from './Checklist';
 import FileUpload from './FileUpload';
 import './CsvReader.scss';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
+import csvImage from '../images/file.png';
+import upload from '../images/upload.png';
+import selectColumn from '../images/select-col.png';
+import viewDetails from '../images/details.png';
 
 export interface CsvReaderProp {
   browser?: any
@@ -61,15 +65,16 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
       headers, displayHeaders, data, fileName,
     } = this.state;
     let dataComponents;
+    let infoDirection = browser.lessThan.large ? 'column' : 'row'
     if (data && data.length) {
       dataComponents = (
         <>
           <div className={'column-checklist-container section-container'}>
-            <h2>Columns Displayed</h2>
+            <h3>Columns Displayed</h3>
             <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
           </div>
           <div className={'section-container'}>
-            <h2>Data</h2>
+            <h3>Data</h3>
             <SearchableTable data={data} displayHeaders={displayHeaders} />
           </div>
         </>
@@ -77,33 +82,53 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     } else if (fileName) {
       dataComponents = (
         <>
-          <h2>Data</h2>
+          <h3>Data</h3>
           <Typography variant="body2">No data available</Typography>
         </>
       );
+    } else {
+      dataComponents = (
+        <div className={'container'}>
+          <h3>How it works?</h3>
+          <Box display='flex' flexDirection={infoDirection} justifyContent='space-between'>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+              <img src={upload} width='50' />
+              <h4>1. Upload CSV file</h4>
+            </Box>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+              <img src={selectColumn} width='50' />
+              <h4>2. Select columns you would like to view</h4>
+            </Box>
+            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+              <img src={viewDetails} width='50' />
+              <h4>3.View data table</h4>
+            </Box>
+          </Box>
+        </div>
+      );
     }
     return (
-      <div className="page">
-        <div className={'section-container'}>
-          <h1>CSV Reader</h1>
+      <div>
+        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container'}>
+          <img src={csvImage} width='80' />
+          <h1>CSV READER</h1>
 
-          <div className="upload-csv-container">
-            <h2>Upload a file</h2>
-            {fileName ? (
-              <Typography variant="h6">
-                File:
-        {fileName}
-              </Typography>
-            ) : <></>}
-            <FileUpload onFileChange={this.onFileChange} />
-          </div>
+          <h4>Upload a csv file to view its data!</h4>
 
-        </div>
+          <FileUpload onFileChange={this.onFileChange} />
+
+          {fileName ? (
+            <Typography variant="subtitle2">
+              File: {fileName}
+            </Typography>
+          ) : <></>}
+        </Box>
         {dataComponents}
       </div>
     );
   }
 }
+
 
 const calculateMaxDisCols = (browser: any): number => {
   if (browser.lessThan.small) {
