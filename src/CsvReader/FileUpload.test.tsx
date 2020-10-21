@@ -1,14 +1,28 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
-import FileUpload, { FileUploadProp } from './FileUpload';
+import { FileUpload, FileUploadProp } from './FileUpload';
+import configureStore from 'redux-mock-store';
+import renderer from 'react-test-renderer';
+import { Provider } from 'react-redux';
 
 describe('File Upload Component', () => {
+  // let component: ReactTestRenderer;
   let wrapper: ReactWrapper<FileUploadProp, any, FileUpload>;
+  const mockStore = configureStore([]);
+  let store;
+
   beforeEach(() => {
     const props = {
       onFileChange: () => { },
+      browser: {
+        is: {
+          extraSmall: false
+        }
+      }
     };
-    wrapper = mount(<FileUpload {...props} />);
+    wrapper = mount(
+      <FileUpload {...props} />
+    );
   });
 
   test('mapCsvResultToData', () => {
