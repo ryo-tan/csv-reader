@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent, Fragment } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import csv from 'csvtojson';
 import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss';
@@ -88,7 +88,7 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
       );
     }
     return (
-      <div>
+      <>
         <input
           type="file"
           hidden
@@ -100,7 +100,7 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
           UPLOAD CSV
         </Button>
         {loadingComponent}
-      </div>
+      </>
     );
   }
 }
