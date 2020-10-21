@@ -13,6 +13,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "csvtojson": "^2.0.10",
+    "eslint": "^6.6.0",
     "node-sass": "^4.14.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -53,10 +54,15 @@
     "@types/react-highlighter": "^0.3.4",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
+    "@types/react-test-renderer": "^16.9.3",
     "@types/redux": "^3.6.0",
+    "@types/redux-mock-store": "^1.0.2",
     "@types/redux-thunk": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5"
+    "enzyme-adapter-react-16": "^1.15.5",
+    "eslint-plugin-react": "^7.21.5",
+    "redux-mock-store": "^1.5.4"
   }
 }
