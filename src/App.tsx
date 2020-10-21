@@ -10,7 +10,7 @@ import CsvReader from './CsvReader/CsvReader';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: teal[500],
+      main: teal[700],
     },
     secondary: {
       main: orange.A400,
