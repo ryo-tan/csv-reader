@@ -1,7 +1,7 @@
-import { createStore } from 'redux'
-import { responsiveStoreEnhancer } from 'redux-responsive'
-import reducer from './reducer'
+import { createStore } from 'redux';
+import { responsiveStoreEnhancer } from 'redux-responsive';
+import reducer from './reducer';
 
-const store = createStore(reducer, responsiveStoreEnhancer)
+const store = createStore(reducer, responsiveStoreEnhancer);
 
-export default store
+export default store;
