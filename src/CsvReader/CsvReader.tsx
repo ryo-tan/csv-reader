@@ -65,7 +65,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
       headers, displayHeaders, data, fileName,
     } = this.state;
     let dataComponents;
-    let infoDirection = browser.lessThan.large ? 'column' : 'row'
+    let infoDirection = browser.lessThan.large ? 'column' : 'row';
     if (data && data.length) {
       dataComponents = (
         <>
