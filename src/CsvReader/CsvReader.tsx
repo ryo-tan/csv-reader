@@ -64,10 +64,14 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     if (data && data.length) {
       dataComponents = (
         <>
-          <h2>Columns Displayed</h2>
-          <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
-          <h2>Data</h2>
-          <SearchableTable data={data} displayHeaders={displayHeaders} />
+          <div className={'column-checklist-container section-container'}>
+            <h2>Columns Displayed</h2>
+            <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
+          </div>
+          <div className={'section-container'}>
+            <h2>Data</h2>
+            <SearchableTable data={data} displayHeaders={displayHeaders} />
+          </div>
         </>
       );
     } else if (fileName) {
@@ -80,17 +84,20 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     }
     return (
       <div className="page">
-        <h1>CSV Reader</h1>
+        <div className={'section-container'}>
+          <h1>CSV Reader</h1>
 
-        <div className="upload-csv-container">
-          <h2>Upload a file</h2>
-          {fileName ? (
-            <Typography variant="h6">
-              File:
-                {fileName}
-            </Typography>
-          ) : <></>}
-          <FileUpload onFileChange={this.onFileChange} />
+          <div className="upload-csv-container">
+            <h2>Upload a file</h2>
+            {fileName ? (
+              <Typography variant="h6">
+                File:
+        {fileName}
+              </Typography>
+            ) : <></>}
+            <FileUpload onFileChange={this.onFileChange} />
+          </div>
+
         </div>
         {dataComponents}
       </div>
