@@ -64,6 +64,7 @@ function Row(props: { row: Record<string, string>, headers: Array<string>, searc
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length + 1}>
+          {/* FIXME: findDOMNode is deprecated in StrictMode */}
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               {
