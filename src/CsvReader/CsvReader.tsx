@@ -22,6 +22,47 @@ export interface CsvReaderState {
   fileName?: string
 }
 
+// return maximum col of data headers that can be displayed based on screen size
+const calculateMaxDisCols = (browser: IBrowser): number => {
+  if (browser.lessThan.small) {
+    return 2;
+  }
+  if (browser.lessThan.medium) {
+    return 3;
+  }
+  if (browser.lessThan.large) {
+    return 5;
+  }
+  return 10;
+};
+
+function HowItWorks(props: { browser: IBrowser }) {
+  const { browser } = props;
+  let infoDirection = browser.lessThan.large ? 'column' : 'row';
+
+  return (
+    <Box className={'container'} display='flex' flexDirection='column'>
+      <Box display='flex' justifyContent='center' alignItems='center'>
+        <h2>How it works?</h2>
+      </Box>
+      <Box display='flex' flexDirection={infoDirection} justifyContent='space-between'>
+        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={upload} width='50' />
+          <h4>1. Upload CSV file</h4>
+        </Box>
+        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={selectColumn} width='50' />
+          <h4>2. Select columns you would like to view</h4>
+        </Box>
+        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={viewDetails} width='50' />
+          <h4>3.View data table</h4>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
 class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
   tableData = null;
 
@@ -67,17 +108,16 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
       headers, displayHeaders, data, fileName,
     } = this.state;
     let dataComponents;
-    let infoDirection = browser.lessThan.large ? 'column' : 'row';
     if (data && data.length) {
       // got data
       dataComponents = (
         <>
           <div className={'column-checklist-container section-container'}>
-            <h3>Columns Displayed</h3>
+            <h2>Columns Displayed</h2>
             <Checklist maxNumOfCol={calculateMaxDisCols(browser)} updateDisplayHeaders={this.onDisplayHeadersChange} headers={headers} displayHeaders={displayHeaders} />
           </div>
           <div className={'section-container'}>
-            <h3>Data</h3>
+            <h2>Data</h2>
             <Typography className={'subtitle'}>Click on data row to view more data</Typography>
             <SearchableTable data={data} displayHeaders={displayHeaders} />
           </div>
@@ -92,26 +132,9 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
         </div>
       );
     } else {
-      // TODO: Refactor component to functional component
-      // no file yet
+      // no file uploaded yet
       dataComponents = (
-        <div className={'container'}>
-          <h3>How it works?</h3>
-          <Box display='flex' flexDirection={infoDirection} justifyContent='space-between'>
-            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-              <img src={upload} width='50' />
-              <h4>1. Upload CSV file</h4>
-            </Box>
-            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-              <img src={selectColumn} width='50' />
-              <h4>2. Select columns you would like to view</h4>
-            </Box>
-            <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-              <img src={viewDetails} width='50' />
-              <h4>3.View data table</h4>
-            </Box>
-          </Box>
-        </div>
+        <HowItWorks browser={browser}></HowItWorks>
       );
     }
     return (
@@ -137,18 +160,6 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
 }
 
 
-const calculateMaxDisCols = (browser: IBrowser): number => {
-  if (browser.lessThan.small) {
-    return 2;
-  }
-  if (browser.lessThan.medium) {
-    return 3;
-  }
-  if (browser.lessThan.large) {
-    return 5;
-  }
-  return 10;
-};
 
 const mapStateToProps = (state: IStore) => ({ browser: state.browser });
 
