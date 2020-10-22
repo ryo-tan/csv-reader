@@ -105,6 +105,6 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
     );
   }
 }
-const mapStateToProps = (storeState: any, ownProps: any): any => ({ ...ownProps, browser: storeState.browser });
+const mapStateToProps = (storeState: any, ownProps: FileUploadProp) => ({ ...ownProps, browser: storeState.browser });
 
 export default connect(mapStateToProps)(FileUpload);
