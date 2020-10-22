@@ -1,6 +1,6 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
-import { FileUpload, FileUploadProp, FileUploadState } from './FileUpload';
+import { FileUpload, FileUploadProps, FileUploadState } from './FileUpload';
 import configureStore from 'redux-mock-store';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
@@ -8,7 +8,7 @@ import { IBrowser } from 'redux-responsive/types';
 
 describe('File Upload Component', () => {
   // let component: ReactTestRenderer;
-  let wrapper: ReactWrapper<FileUploadProp, FileUploadState, FileUpload>;
+  let wrapper: ReactWrapper<FileUploadProps, FileUploadState, FileUpload>;
 
   beforeEach(() => {
     const props = {

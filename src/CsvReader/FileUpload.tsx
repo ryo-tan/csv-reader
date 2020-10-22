@@ -4,17 +4,18 @@ import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
+import { IStore } from '../Core/store';
 
-export interface FileUploadProp {
+export interface FileUploadProps {
   onFileChange(data: Array<Record<string, string>>, headers: Array<string>, fileName: string): void;
-  browser: IBrowser
+  browser?: IBrowser
 }
 export interface FileUploadState {
   selectedFile?: File;
   loading: boolean;
 }
 // to add props to pass data back
-export class FileUpload extends Component<FileUploadProp, FileUploadState> {
+export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   state = {
     selectedFile: undefined,
     loading: false,
@@ -97,7 +98,7 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
           accept=".csv"
           onChange={this.onFileChange}
         />
-        <Button disabled={loading} className={(browser.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
+        <Button disabled={loading} className={(browser!.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
           UPLOAD CSV
         </Button>
         {loadingComponent}
@@ -105,6 +106,6 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
     );
   }
 }
-const mapStateToProps = (storeState: any, ownProps: FileUploadProp) => ({ ...ownProps, browser: storeState.browser });
+const mapStateToProps = (storeState: IStore, ownProps: FileUploadProps) => ({ ...ownProps, browser: storeState.browser });
 
 export default connect(mapStateToProps)(FileUpload);

@@ -10,8 +10,9 @@ import upload from '../images/upload.png';
 import selectColumn from '../images/select-col.png';
 import viewDetails from '../images/details.png';
 import { IBrowser } from 'redux-responsive/types';
+import { IStore } from '../Core/store';
 
-export interface CsvReaderProp {
+export interface CsvReaderProps {
   browser: IBrowser
 }
 export interface CsvReaderState {
@@ -21,7 +22,7 @@ export interface CsvReaderState {
   fileName?: string
 }
 
-class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
+class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
   tableData = null;
 
   state = {
@@ -52,7 +53,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     return inputDisplayHeaders;
   }
 
-  static getDerivedStateFromProps(props: CsvReaderProp, state: CsvReaderState) {
+  static getDerivedStateFromProps(props: CsvReaderProps, state: CsvReaderState) {
     const { browser } = props;
     const { displayHeaders } = state;
     const maxNumberOfCol = calculateMaxDisCols(browser);
@@ -68,6 +69,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
     let dataComponents;
     let infoDirection = browser.lessThan.large ? 'column' : 'row';
     if (data && data.length) {
+      // got data
       dataComponents = (
         <>
           <div className={'column-checklist-container section-container'}>
@@ -91,6 +93,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
       );
     } else {
       // TODO: Refactor component to functional component
+      // no file yet
       dataComponents = (
         <div className={'container'}>
           <h3>How it works?</h3>
@@ -147,6 +150,6 @@ const calculateMaxDisCols = (browser: IBrowser): number => {
   return 10;
 };
 
-const mapStateToProps = (state: any) => ({ browser: state.browser });
+const mapStateToProps = (state: IStore) => ({ browser: state.browser });
 
 export default connect(mapStateToProps)(CsvReader);
