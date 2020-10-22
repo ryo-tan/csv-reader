@@ -41,8 +41,8 @@ function HowItWorks(props: { browser: IBrowser }) {
   let infoDirection = browser.lessThan.large ? 'column' : 'row';
 
   return (
-    <Box className={'container'} display='flex' flexDirection='column'>
-      <Box display='flex' justifyContent='center' alignItems='center'>
+    <Box className={'section-container'} display='flex' flexDirection='column'>
+      <Box className={'section-title-container'} display='flex' justifyContent='center' alignItems='center'>
         <h2>How it works?</h2>
       </Box>
       <Box display='flex' flexDirection={infoDirection} justifyContent='space-between'>
@@ -56,7 +56,7 @@ function HowItWorks(props: { browser: IBrowser }) {
         </Box>
         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
           <img src={viewDetails} width='50' />
-          <h4>3.View data table</h4>
+          <h4>3. View data table</h4>
         </Box>
       </Box>
     </Box>
@@ -118,7 +118,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
           </div>
           <div className={'section-container'}>
             <h2>Data</h2>
-            <Typography className={'subtitle'}>Click on data row to view more data</Typography>
+            <Typography className={'subtitle section-title-container'}>Click on data row to view more data</Typography>
             <SearchableTable data={data} displayHeaders={displayHeaders} />
           </div>
         </>
@@ -126,7 +126,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
     } else if (fileName) {
       // got file but no data
       dataComponents = (
-        <div className={'container'}>
+        <div className={'section-container'}>
           <h3>Data</h3>
           <Typography variant="body2">No data available</Typography>
         </div>
