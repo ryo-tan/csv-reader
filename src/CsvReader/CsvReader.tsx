@@ -145,7 +145,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
     return (
       <div>
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container section-container'}>
-          <img src={csvImage} height='150px' />
+          <img src={csvImage} alt='CSV Reader' height='150px' />
           <h1>CSV READER</h1>
 
           <FileUpload onFileChange={this.onFileChange} />
