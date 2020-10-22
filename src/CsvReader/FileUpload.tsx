@@ -3,10 +3,11 @@ import csv from 'csvtojson';
 import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
+import { IBrowser } from 'redux-responsive/types';
 
 export interface FileUploadProp {
   onFileChange(data: Array<Record<string, string>>, headers: Array<string>, fileName: string): void;
-  browser?: any
+  browser: IBrowser
 }
 export interface FileUploadState {
   selectedFile?: File;
