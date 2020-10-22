@@ -56,7 +56,7 @@ function Row(props: { row: Record<string, string>, headers: Array<string>, searc
           headers.map((header) => (
             <TableCell key={header}>
               <Highlight search={searchTerm}>
-                {row[header]}
+                {row[header] ? row[header] : '-'}
               </Highlight>
             </TableCell>
           ))
@@ -67,7 +67,7 @@ function Row(props: { row: Record<string, string>, headers: Array<string>, searc
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               {
-                Object.keys(row).map((key: string) => <Detail key={key} label={key} value={row[key]} searchTerm={searchTerm} />)
+                Object.keys(row).map((key: string) => <Detail key={key} label={key} value={row[key] ? row[key] : '-'} searchTerm={searchTerm} />)
               }
             </Box>
           </Collapse>
