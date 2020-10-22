@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SearchableTable } from './Table';
-import Checklist from './Checklist';
-import FileUpload from './FileUpload';
+import { SearchableTable } from './Table/Table';
+import Checklist from './Checklist/Checklist';
+import FileUpload from './FileUpload/FileUpload';
 import './CsvReader.scss';
 import { Typography, Box } from '@material-ui/core';
 import csvImage from '../images/file.png';

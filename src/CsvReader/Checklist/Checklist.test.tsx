@@ -9,6 +9,7 @@ describe('Checklist Component', () => {
       updateDisplayHeaders: () => { },
       headers: ['one', 'two', 'three', 'four', 'five'],
       displayHeaders: ['one', 'two', 'three'],
+      maxNumOfCol: 2
     };
     wrapper = mount(<Checklist {...props} />);
   });

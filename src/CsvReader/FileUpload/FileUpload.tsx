@@ -4,7 +4,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
-import { IStore } from '../Core/store';
+import { IStore } from '../../Core/store';
 
 export interface FileUploadProps {
   onFileChange(data: Array<Record<string, string>>, headers: Array<string>, fileName: string): void;
