@@ -27,6 +27,6 @@ Extend `create-react-app` eslint configuration to fix current warning
 ```bash
 'React' was used before it was defined  @typescript-eslint/no-use-before-define
 ```
-[Linkn to official documentation](https://create-react-app.dev/docs/setting-up-your-editor/#experimental-extending-the-eslint-config)
+[Link to official documentation](https://create-react-app.dev/docs/setting-up-your-editor/#experimental-extending-the-eslint-config)
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
