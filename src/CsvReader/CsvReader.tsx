@@ -148,15 +148,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
           <img src={csvImage} width='80' />
           <h1>CSV READER</h1>
 
-          <h4>Upload a csv file to view its data!</h4>
-
           <FileUpload onFileChange={this.onFileChange} />
-
-          {fileName ? (
-            <Typography variant="subtitle2">
-              File: {fileName}
-            </Typography>
-          ) : <></>}
         </Box>
         {dataComponents}
       </div>
