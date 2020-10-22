@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import csv from 'csvtojson';
-import { Button, CircularProgress, Box } from '@material-ui/core';
+import { Button, CircularProgress, Box, Typography } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
@@ -100,14 +100,13 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       if (fileName) {
         // if got file uploaded
         fileInfoComponent = (
-          <>
-            <Box className={'file-name-container'} onClick={this.uploadFile}>{fileName}</Box>
-            <h4>Not this file?</h4>
-          </>
+          <Box className={'file-name-container'}>
+            <Box className={'file-name'} onClick={this.uploadFile}>{fileName}</Box>
+          </Box>
         );
       } else {
         fileInfoComponent = (
-          <h4>Upload a csv file to view its data!</h4>
+          <h4>Want to view your data? Upload your file now!</h4>
         );
       }
     }

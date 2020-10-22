@@ -3,13 +3,24 @@
 }
 
 .file-name-container{
+    width:100%;
+    max-width: 500px;
+    padding-bottom: 2em;
+}
+.file-name{
     padding: 8px 24px;
     background: white;
     border-radius: 20px;
     color: #777;
-    border: 1px solid #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
 }
 
+.file-name-caption{
+    padding-left: 24px;
+}
 .file-name-container:hover{
     cursor: pointer;
 }
