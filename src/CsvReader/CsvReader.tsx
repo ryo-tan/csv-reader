@@ -75,7 +75,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
           </div>
           <div className={'section-container'}>
             <h3>Data</h3>
-            <Typography variant='body1'>Click on data row to view more data</Typography>
+            <Typography className={'subtitle'}>Click on data row to view more data</Typography>
             <SearchableTable data={data} displayHeaders={displayHeaders} />
           </div>
         </>
