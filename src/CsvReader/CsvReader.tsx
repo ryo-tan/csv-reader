@@ -8,7 +8,7 @@ import { SearchableTable } from './Table/Table';
 import Checklist from './Checklist/Checklist';
 import FileUpload from './FileUpload/FileUpload';
 
-import csvImage from '../images/file.png';
+import csvImage from '../images/csv.png';
 import upload from '../images/upload.png';
 import selectColumn from '../images/select-col.png';
 import viewDetails from '../images/details.png';
@@ -49,16 +49,16 @@ function HowItWorks(props: { browser: IBrowser }) {
         <h2>How it works?</h2>
       </Box>
       <Box display='flex' flexDirection={infoDirection} justifyContent='space-between'>
-        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-          <img src={upload} width='50' />
+        <Box className={'instruction-container'} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={upload} alt={'Upload file'} width='50' />
           <h4>1. Upload CSV file</h4>
         </Box>
-        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-          <img src={selectColumn} width='50' />
+        <Box className={'instruction-container'} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={selectColumn} alt={'Select column'} width='50' />
           <h4>2. Select columns you would like to view</h4>
         </Box>
-        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-          <img src={viewDetails} width='50' />
+        <Box className={'instruction-container'} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+          <img src={viewDetails} alt={'View details'} width='50' />
           <h4>3. View data table</h4>
         </Box>
       </Box>
@@ -145,7 +145,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
     return (
       <div>
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container section-container'}>
-          <img src={csvImage} width='80' />
+          <img src={csvImage} height='150px' />
           <h1>CSV READER</h1>
 
           <FileUpload onFileChange={this.onFileChange} />
