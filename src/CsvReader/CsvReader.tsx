@@ -9,9 +9,10 @@ import csvImage from '../images/file.png';
 import upload from '../images/upload.png';
 import selectColumn from '../images/select-col.png';
 import viewDetails from '../images/details.png';
+import { IBrowser } from 'redux-responsive/types';
 
 export interface CsvReaderProp {
-  browser?: any
+  browser: IBrowser
 }
 export interface CsvReaderState {
   data: Array<Record<string, string>>,
@@ -133,7 +134,7 @@ class CsvReader extends Component<CsvReaderProp, CsvReaderState> {
 }
 
 
-const calculateMaxDisCols = (browser: any): number => {
+const calculateMaxDisCols = (browser: IBrowser): number => {
   if (browser.lessThan.small) {
     return 2;
   }
