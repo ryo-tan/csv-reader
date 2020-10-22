@@ -1,3 +1,15 @@
 .mobile-upload-button{
     width:100%;
 }
+
+.file-name-container{
+    padding: 8px 24px;
+    background: white;
+    border-radius: 20px;
+    color: #777;
+    border: 1px solid #777;
+}
+
+.file-name-container:hover{
+    cursor: pointer;
+}

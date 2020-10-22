@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import csv from 'csvtojson';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, Box } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
@@ -11,14 +11,23 @@ export interface FileUploadProps {
   browser?: IBrowser
 }
 export interface FileUploadState {
-  selectedFile?: File;
   loading: boolean;
+  fileName?: string;
 }
-// to add props to pass data back
+
+function DataLoading() {
+  return (
+    <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center'>
+      <CircularProgress />
+      <h4>We are preparing your data...</h4>
+    </Box>
+  );
+}
+
 export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   state = {
-    selectedFile: undefined,
     loading: false,
+    fileName: undefined
   };
 
   onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +40,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
     } else {
       return;
     }
-    this.setState((state, props) => ({ ...state, selectedFile: file, loading: true }));
+    this.setState((state, props) => ({ ...state, fileName: file.name, loading: true }));
 
     const reader = new FileReader();
     reader.readAsBinaryString(file);
@@ -78,19 +87,33 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, fileName } = this.state;
     const { browser } = this.props;
-    let loadingComponent;
+
+    const buttonLabel = fileName ? `UPLOAD ANOTHER CSV` : `UPLOAD CSV`;
+    let fileInfoComponent;
     if (loading) {
-      loadingComponent = (
-        <>
-          <CircularProgress />
-          <div>Loading data...</div>
-        </>
+      fileInfoComponent = (
+        <DataLoading></DataLoading>
       );
+    } else {
+      if (fileName) {
+        // if got file uploaded
+        fileInfoComponent = (
+          <>
+            <Box className={'file-name-container'} onClick={this.uploadFile}>{fileName}</Box>
+            <h4>Not this file?</h4>
+          </>
+        );
+      } else {
+        fileInfoComponent = (
+          <h4>Upload a csv file to view its data!</h4>
+        );
+      }
     }
     return (
       <>
+        {fileInfoComponent}
         <input
           type="file"
           hidden
@@ -99,9 +122,8 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           onChange={this.onFileChange}
         />
         <Button disabled={loading} className={(browser!.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
-          UPLOAD CSV
+          {buttonLabel}
         </Button>
-        {loadingComponent}
       </>
     );
   }
