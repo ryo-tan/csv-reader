@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import csv from 'csvtojson';
-import { Button, CircularProgress, Box, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Box } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
@@ -14,6 +14,7 @@ export interface FileUploadState {
   loading: boolean;
   fileName?: string;
 }
+
 
 function DataLoading() {
   return (
