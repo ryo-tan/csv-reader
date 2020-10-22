@@ -96,7 +96,7 @@ export class FileUpload extends Component<FileUploadProp, FileUploadState> {
           accept=".csv"
           onChange={this.onFileChange}
         />
-        <Button className={(browser.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
+        <Button disabled={loading} className={(browser.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
           UPLOAD CSV
         </Button>
         {loadingComponent}
