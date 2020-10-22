@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Typography, Box } from '@material-ui/core';
+import { IBrowser } from 'redux-responsive/types';
+import { IStore } from '../Core/store';
+
 import { SearchableTable } from './Table/Table';
 import Checklist from './Checklist/Checklist';
 import FileUpload from './FileUpload/FileUpload';
-import './CsvReader.scss';
-import { Typography, Box } from '@material-ui/core';
+
 import csvImage from '../images/file.png';
 import upload from '../images/upload.png';
 import selectColumn from '../images/select-col.png';
 import viewDetails from '../images/details.png';
-import { IBrowser } from 'redux-responsive/types';
-import { IStore } from '../Core/store';
+
+import './CsvReader.scss';
 
 export interface CsvReaderProps {
   browser: IBrowser
@@ -108,6 +111,7 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
       headers, displayHeaders, data, fileName,
     } = this.state;
     let dataComponents;
+
     if (data && data.length) {
       // got data
       dataComponents = (
@@ -137,9 +141,10 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
         <HowItWorks browser={browser}></HowItWorks>
       );
     }
+
     return (
       <div>
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container'}>
+        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container section-container'}>
           <img src={csvImage} width='80' />
           <h1>CSV READER</h1>
 
