@@ -60,7 +60,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
     }
     dataRows.forEach((dataRow: Record<string, string>, i: number) => {
       if (i !== 0) { // first row contains col headers
-        const builtObject: any = {};
+        const builtObject: Record<string, string> = {};
 
         Object.keys(dataRow).forEach((key: string) => {
           const valueToAddInBuiltObject = dataRow[key];
