@@ -24,19 +24,23 @@ export interface CsvReaderState {
   displayHeaders: Array<string>,
   fileName?: string
 }
+const MOBILE_VIEW_MAX_COL = 2;
+const TABLET_VIEW_MAX_COL = 3;
+const DESKTOP_VIEW_MAX_COL = 5;
+const LARGE_DESKTOP_VIEW_MAX_COL = 10;
 
 // return maximum col of data headers that can be displayed based on screen size
 const calculateMaxDisCols = (browser: IBrowser): number => {
   if (browser.lessThan.small) {
-    return 2;
+    return MOBILE_VIEW_MAX_COL;
   }
   if (browser.lessThan.medium) {
-    return 3;
+    return TABLET_VIEW_MAX_COL;
   }
   if (browser.lessThan.large) {
-    return 5;
+    return DESKTOP_VIEW_MAX_COL;
   }
-  return 10;
+  return LARGE_DESKTOP_VIEW_MAX_COL;
 };
 
 function HowItWorks(props: { browser: IBrowser }) {
