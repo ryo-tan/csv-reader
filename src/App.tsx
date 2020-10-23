@@ -19,7 +19,7 @@ const theme = createMuiTheme({
 });
 function App() {
   return (
-    <div className="App-header">
+    <div className="app-container">
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
