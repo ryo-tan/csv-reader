@@ -50,6 +50,7 @@ export default class Checklist extends Component<ChecklistProp, ChecklistState> 
   }
 
   // map checklist obj to display headers array
+  // return list of keys where value(checked) is true
   getDisplayHeaders(list: Record<string, boolean>): Array<string> {
     const displayHeaders: Array<string> = [];
     for (const [key, value] of Object.entries(list)) {

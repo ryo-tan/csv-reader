@@ -42,7 +42,7 @@ const calculateMaxDisCols = (browser: IBrowser): number => {
 function HowItWorks(props: { browser: IBrowser }) {
   const { browser } = props;
   let infoDirection = browser.lessThan.large ? 'column' : 'row';
-
+  // can be refactored
   return (
     <Box className={'section-container'} display='flex' flexDirection='column'>
       <Box className={'section-title-container'} display='flex' justifyContent='center' alignItems='center'>
@@ -147,7 +147,6 @@ class CsvReader extends Component<CsvReaderProps, CsvReaderState> {
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" className={'hero-container section-container'}>
           <img src={csvImage} alt='CSV Reader' height='150px' />
           <h1>CSV READER</h1>
-
           <FileUpload onFileChange={this.onFileChange} />
         </Box>
         {dataComponents}

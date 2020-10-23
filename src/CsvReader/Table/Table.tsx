@@ -26,6 +26,7 @@ const useRowStyles = makeStyles({
   },
 });
 
+// Key value pair display in expandable panel
 function Detail(props: { label: string, value: string, searchTerm: string }) {
   const { label, value, searchTerm } = props;
   return (
@@ -40,6 +41,7 @@ function Detail(props: { label: string, value: string, searchTerm: string }) {
   );
 }
 
+// View component for each row in table
 function Row(props: { row: Record<string, string>, headers: Array<string>, searchTerm: string }) {
   const { row, headers, searchTerm } = props;
   const [open, setOpen] = React.useState(false);
@@ -65,6 +67,7 @@ function Row(props: { row: Record<string, string>, headers: Array<string>, searc
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={headers.length + 1}>
           {/* FIXME: findDOMNode is deprecated in StrictMode */}
+          {/* Click row to expand Collapse */}
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               {
