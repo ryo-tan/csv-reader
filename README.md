@@ -20,7 +20,7 @@ npm start
 
 ## Assumptions
 ### CSV Files
-This project assumes that the CSV file will be in a format where the data header is at the first row.
+This project assumes that the CSV file will be in a format where the data header is in the first row.
 
 ## Future Roadmap
 Extend `create-react-app` eslint configuration to fix current warning
