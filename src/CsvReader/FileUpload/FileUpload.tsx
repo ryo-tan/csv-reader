@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import csv from 'csvtojson';
-import { Button, CircularProgress, Box } from '@material-ui/core';
+import { Button, CircularProgress, Box, Typography } from '@material-ui/core';
 import './FileUpload.scss';
 import { connect } from 'react-redux';
 import { IBrowser } from 'redux-responsive/types';
@@ -13,6 +13,7 @@ export interface FileUploadProps {
 export interface FileUploadState {
   loading: boolean;
   fileName?: string;
+  isFileTypeInvalid: boolean;
 }
 
 
@@ -25,22 +26,38 @@ function DataLoading() {
   );
 }
 
+function isFileTypeValid(file: File): boolean {
+  const validFileType = 'csv';
+  if (file) {
+    // check if file type is csv
+    return file.name.split('.').pop() === validFileType;
+  }
+  return false;
+}
 export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   state = {
     loading: false,
-    fileName: undefined
+    fileName: undefined,
+    isFileTypeInvalid: false
   };
 
   onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     let file: File;
     if (event.target.files) {
       file = event.target.files[0];
-      if (!file) {
+      if (!file) { // return if no file
         return;
       }
-    } else {
+
+      if (!isFileTypeValid(file)) {
+        this.setState((state, props) => ({ ...state, isFileTypeInvalid: true, loading: false }));
+        return;
+      }
+    } else { // return if no files
       return;
     }
+
+    // start loading
     this.setState((state, props) => ({ ...state, fileName: file.name, loading: true }));
 
     const reader = new FileReader();
@@ -58,7 +75,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
             this.props.onFileChange(outputData, Object.keys(outputData[0]), file.name);
           }
 
-          this.setState((state) => ({ ...state, loading: false }));
+          this.setState((state) => ({ ...state, isFileTypeInvalid: false, loading: false }));
         });
     };
   }
@@ -66,10 +83,10 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   mapCsvResultToData = (dataRows: Array<Record<string, string>>): Array<Record<string, string>> => {
     const data: Array<Record<string, string>> = [];
     if (dataRows.length === 1) {
-      return data;
+      return data; //return empty data
     }
     dataRows.forEach((dataRow: Record<string, string>, i: number) => {
-      if (i !== 0) { // first row contains col headers
+      if (i !== 0) { // first datarow contains col headers
         const builtObject: Record<string, string> = {};
 
         Object.keys(dataRow).forEach((key: string) => {
@@ -77,7 +94,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           const keyToAddInBuiltObject = dataRows[0][key];
           builtObject[keyToAddInBuiltObject] = valueToAddInBuiltObject;
         });
-        data.push(builtObject);
+        data.push(builtObject); // push in key value pairs of one data entry
       }
     });
     return data;
@@ -88,7 +105,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   }
 
   render() {
-    const { loading, fileName } = this.state;
+    const { loading, fileName, isFileTypeInvalid } = this.state;
     const { browser } = this.props;
 
     const buttonLabel = fileName ? `UPLOAD ANOTHER CSV` : `UPLOAD CSV`;
@@ -124,6 +141,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
         <Button disabled={loading} className={(browser!.is.extraSmall ? 'mobile-upload-button' : '')} variant="contained" color="primary" onClick={this.uploadFile}>
           {buttonLabel}
         </Button>
+        {isFileTypeInvalid ? <Typography variant="caption" color='error'>Invalid file type, please upload a CSV file.</Typography> : <></>}
       </>
     );
   }
